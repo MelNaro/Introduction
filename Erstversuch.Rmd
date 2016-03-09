@@ -13,6 +13,8 @@ Zuerst die Daten laden.
 
 ```{r cars}
 library(zoo)
+library(TTR)
+
 B002102.Airflow.vorher <- read.csv("C:/Users/Raoul/Desktop/MelSchlaf/Rohdaten/B002102 Airflow vorher", sep=";")
 B002102.Airflow.vorher$Date = NULL
 B002102.Airflow.vorher$HH = NULL
@@ -23,16 +25,36 @@ summary(is.na(B002102.Airflow.vorher))
 B002102.Airflow.vorher$Airflow.uV. = gsub("\\,", ".", B002102.Airflow.vorher$Airflow.uV.)
 B002102.Airflow.vorher$Airflow.uV. = as.numeric(B002102.Airflow.vorher$Airflow.uV.)
 
-timeSeries <- zoo(B002102.Airflow.vorher)
+timeSeries <- zoo(B002102.Airflow.vorher$Airflow.uV.)
 plot(timeSeries)
 ```
 
-## Including Plots
+## Analyse
 
-You can also embed plots, for example:
+Smoothing und Decomposition sowie Check auf NA's
+```{r Smoothing, echo=FALSE, warning=TRUE}
+Airvorher<-SMA(timeSeries, n=2000)
+plot(Airvorher)
+Airvorher.ts = zoo(Airvorher)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+summary(is.na(Airvorher))
+
+stl(Airvorher)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+sdfsdaf externer Datenprobelauf
+
+```{r}
+library(Ecdat)
+
+data("AirPassengers")
+tsA = AirPassengers
+plot(AirPassengers)
+decomposed = stl(zoo(AirPassengers), s.window = 1)
+summary(decomposed)
+plot(decomposed)
+
+#plot(stl(as.ts(AirPassengers)))
+```
+
