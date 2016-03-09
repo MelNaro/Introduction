@@ -1,0 +1,38 @@
+---
+title: "Erstversuch"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Zuerst die Daten laden.
+
+```{r cars}
+library(zoo)
+B002102.Airflow.vorher <- read.csv("C:/Users/Raoul/Desktop/MelSchlaf/Rohdaten/B002102 Airflow vorher", sep=";")
+B002102.Airflow.vorher$Date = NULL
+B002102.Airflow.vorher$HH = NULL
+B002102.Airflow.vorher$MM = NULL
+B002102.Airflow.vorher$SS = NULL 
+summary(is.na(B002102.Airflow.vorher))
+
+B002102.Airflow.vorher$Airflow.uV. = gsub("\\,", ".", B002102.Airflow.vorher$Airflow.uV.)
+B002102.Airflow.vorher$Airflow.uV. = as.numeric(B002102.Airflow.vorher$Airflow.uV.)
+
+timeSeries <- zoo(B002102.Airflow.vorher)
+plot(timeSeries)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
